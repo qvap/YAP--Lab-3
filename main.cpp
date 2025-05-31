@@ -16,17 +16,21 @@ public:
             }
             ++begin;
         }
-        return end;
+        return nullptr;
     }
 
     static int* binary_search (int* begin, int* end, const int value) {
-        while (begin != end) {
-            if (*begin >= value) {
-                return begin;
+        while (begin < end) {
+            int* mid = begin + (end - begin) / 2;
+            if (*mid == value) {
+                return mid;
+            } else if (*mid > value) {
+                end = mid;
+            } else {
+                begin = mid + 1;
             }
-            ++begin;
         }
-        return end;
+        return nullptr;
     }
 };
 
@@ -85,17 +89,31 @@ public:
         cout << "Введите искомое число: ";
         cin >> value;
         int* found = CSearch::linear_search(arr, arr + N, value);
-        cout << "Результат линейного поиска (индекс): " << (found - arr) << " по адресу: " << found << endl;
-        menu();
+        if (found == nullptr) {
+            cout << "Число не найдено в массиве." << endl;
+            menu();
+        } else {
+            cout << "Результат линейного поиска (индекс): " << (found - arr) << " по адресу: " << found << endl;
+            menu();
+        }
     }
 
     void binary_search() {
         int value = 0;
         cout << "Введите искомое число: ";
         cin >> value;
+        cout << "Сортировка массива перед двоичным поиском..." << endl;
+        sort(arr, arr + N);
+        cout << "Массив отсортирован:" << endl;
+        display_list();
         const int* found = CSearch::binary_search(arr, arr + N, value);
-        cout << "Результат двоичного поиска (индекс): " << (found - arr) << " по адресу: " << found << endl;
-        menu();
+        if (found == nullptr) {
+            cout << "Число не найдено в массиве." << endl;
+            menu();
+        } else {
+            cout << "Результат двоичного поиска (индекс): " << (found - arr) << " по адресу: " << found << endl;
+            menu();
+        }
     }
 
     void menu() {
